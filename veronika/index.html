@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Настрой дня</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #fdf6f0 0%, #f2e6ef 100%);
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: #4a3f3a;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px 40px 30px;
+      text-align: center;
+      max-width: 480px;
+      box-shadow: 0 10px 40px rgba(120, 90, 60, 0.12);
+    }
+    svg { margin-bottom: 10px; }
+    h1 { font-size: 22px; margin: 0 0 14px; color: #b76e79; font-weight: 600; }
+    p  { font-size: 18px; line-height: 1.7; margin: 0; }
+    .small { font-size: 13px; color: #a0958e; margin-top: 22px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <svg width="90" height="90" viewBox="0 0 100 100" fill="none">
+      <path d="M50 88 C 48 66, 46 52, 50 34" stroke="#8aa87a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M50 60 C 40 56, 32 58, 26 50" stroke="#8aa87a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M50 48 C 60 44, 68 46, 74 38" stroke="#8aa87a" stroke-width="3" stroke-linecap="round"/>
+      <g>
+        <circle cx="50" cy="26" r="6" fill="#f2b134"/>
+        <ellipse cx="50" cy="12" rx="5" ry="9" fill="#e98ba0"/>
+        <ellipse cx="50" cy="40" rx="5" ry="9" fill="#e98ba0"/>
+        <ellipse cx="36" cy="26" rx="9" ry="5" fill="#e98ba0"/>
+        <ellipse cx="64" cy="26" rx="9" ry="5" fill="#e98ba0"/>
+        <ellipse cx="40" cy="16" rx="7" ry="5" fill="#f2a5b5" transform="rotate(-45 40 16)"/>
+        <ellipse cx="60" cy="16" rx="7" ry="5" fill="#f2a5b5" transform="rotate(45 60 16)"/>
+        <ellipse cx="40" cy="36" rx="7" ry="5" fill="#f2a5b5" transform="rotate(45 40 36)"/>
+        <ellipse cx="60" cy="36" rx="7" ry="5" fill="#f2a5b5" transform="rotate(-45 60 36)"/>
+      </g>
+    </svg>
+    <h1 id="title"></h1>
+    <p id="phrase"></p>
+    <p class="small" id="note"></p>
+  </div>
+
+  <script>
+    const phrases = [
+      "У тебя потрясающее чувство вкуса, и не только в одежде, но и в выборе людей.",
+      "Мне нравится, как ты относишься к делу, которое тебе близко.",
+      "Именно твой взгляд на вещи заставил меня начать делать, а не просто мечтать.",
+      "Твой голос успокаивает. Это странно и приятно одновременно.",
+      "Мне нравится, как ты заботишься о близких.",
+      "Ты умеешь быть сильной без жесткости. Это восхищает.",
+      "С тобой хочется говорить о важном, потому что ты не обесцениваешь чувства.",
+      "Твоя поддержка (даже критика) звучит так, что хочется стать лучше.",
+      "Ты умеешь вдохновлять, даже когда просто говоришь правду.",
+      "Я ценю, что ты не боишься говорить «нет» и «это не сработает».",
+      "Ты дала мне ту честность, которую я не хотел слышать, но она была нужна.",
+      "Мне нравится, что ты не пытаешься быть кем-то другим.",
+      "Ты та, с кем хочется пить чай в тишине. И это самый большой комплимент.",
+      "Твоя набожность не делает тебя фанатичной, а делает тебя теплее.",
+      "В тебе есть та мудрость, которая приходит не от возраста, а от сердца.",
+      "Ты умеешь быть благодарной, и это делает тебя красивее любой косметики.",
+      "Мне нравится, как твоя вера делает тебя по-настоящему живой, а не зажатой.",
+      "Ты видишь потенциал там, где другие видят просто странную идею.",
+      "Мне нравится твоя улыбка. Она у тебя настоящая, не дежурная.",
+      "Ты умеешь слушать так, что кажется, будто время останавливается.",
+      "Рядом с тобой спокойно, даже когда вокруг хаос.",
+      "Мне импонирует, как ты относишься к деньгам и вещам (с легкостью, но с умом).",
+      "Твоя искренность — это редкий дар в мире, где все пытаются казаться кем-то другим.",
+      "В тебе есть какая-то нежная сила. Это очень притягивает.",
+      "Твоя способность прощать и отпускать — это суперсила.",
+      "В тебе чувствуется стержень, который не ломается от обстоятельств.",
+      "Ты умеешь радоваться мелочам так, что это передается всем вокруг.",
+      "В тебе есть удивительный внутренний свет, который видно даже без слов.",
+      "В твоих глазах есть глубина, в которой хочется утонуть, но не страшно.",
+      "Ты умеешь создавать уют там, где тебя нет."
+    ];
+
+    const d = new Date();
+    const start = new Date(d.getFullYear(), 0, 1);
+    const dayOfYear = Math.floor((d - start) / (1000 * 60 * 60 * 24)) + 1;
+
+    const i = (dayOfYear - 1) % phrases.length;
+
+    document.getElementById('title').textContent = "День " + (i + 1) + " из 30";
+    document.getElementById('phrase').textContent = phrases[i];
+    document.getElementById('note').textContent = "Возвращайся завтра — будет новая фраза.";
+  </script>
+</body>
+</html>
