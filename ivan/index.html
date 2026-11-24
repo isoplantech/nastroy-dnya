@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настрой дня — для сына</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px 48px;
+    line-height: 1.5;
+  }
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { font-size: 1.6rem; margin-bottom: 8px; }
+  header p { color: var(--muted); font-size: 0.95rem; }
+  .emoji-big { font-size: 3rem; margin-bottom: 12px; display: block; }
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 24px 20px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .day-label { color: var(--accent); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .tip { font-size: 1.15rem; }
+  .tip .emoji { font-size: 1.6rem; margin-right: 8px; }
+  footer { color: var(--muted); font-size: 0.8rem; margin-top: 24px; text-align: center; }
+</style>
+</head>
+<body>
+  <header>
+    <span class="emoji-big" id="headerEmoji">🌱</span>
+    <h1>Настрой дня</h1>
+    <p>Один совет в день. Без давления. Твоё дело — прочитать.</p>
+  </header>
+
+  <div class="card">
+    <div class="day-label" id="dayLabel"></div>
+    <div class="tip" id="tipText"></div>
+  </div>
+
+  <footer id="footerText">Завтра будет новый. Просто открой снова.</footer>
+
+<script>
+  const tips = [
+    { emoji: '🌅', text: 'Начни день с одного вопроса: «Что сегодня сделает меня чуть лучше?» Не для других — для себя.' },
+    { emoji: '💬', text: 'Если что-то не нравится — скажи прямо и спокойно. Люди слышат, когда им не кричат.' },
+    { emoji: '🤝', text: 'Сделал ошибку — признай. Это не слабость. Это уважение к себе и другим.' },
+    { emoji: '📵', text: 'Полистай ленту и заметь: сколько там реальной жизни, а сколько витрины? Не сравнивай себя с витриной.' },
+    { emoji: '🧠', text: 'Твоя ценность — не в том, что у тебя есть. Она в том, как ты поступаешь.' },
+    { emoji: '🫶', text: 'Скажи кому-то спасибо сегодня. Просто так. Это меняет день — и его, и твой.' },
+    { emoji: '⏸️', text: 'Хочешь что-то сказать резко? Пауза 10 секунд. Иногда этого хватает.' },
+    { emoji: '🏃', text: 'Движение — лучший антистресс. 10 минут прогулки без телефона. Попробуй.' },
+    { emoji: '🎯', text: 'Сделай одно маленькое дело, которое откладывал. Не всё — одно. Это уже победа.' },
+    { emoji: '🙅', text: 'Умение сказать «нет» — это не грубость. Это границы. Их уважают.' },
+    { emoji: '📖', text: 'Почитай 5 страниц чего-то, что тебе интересно. Не для школы — для себя.' },
+    { emoji: '😤', text: 'Злость — нормально. Но решать на горячую голову — плохо. Выдохни, потом действуй.' },
+    { emoji: '👀', text: 'Заметь, кто рядом. Иногда человеку нужно просто, чтобы его выслушали. Ты можешь это дать.' },
+    { emoji: '🧹', text: 'Наведи порядок в одном маленьком месте. Порядок вокруг — порядок в голове.' },
+    { emoji: '💤', text: 'Сон — это топливо. Ляг чуть раньше — увидишь разницу.' },
+    { emoji: '💸', text: 'Перед покупкой спроси: «Мне это нужно или я хочу быть как кто-то?» Честный ответ экономит нервы.' },
+    { emoji: '🗣️', text: 'Если чувствуешь, что тебя используют — скажи об этом. Молчание не решает.' },
+    { emoji: '🌤️', text: 'Не всё идёт по плану. И это нормально. План — это ориентир, а не приговор.' },
+    { emoji: '🤲', text: 'Помоги кому-то без выгоды. Это учит чувствовать себя сильным по-настоящему.' },
+    { emoji: '📝', text: 'Запиши одну вещь, за которую ты себе благодарен сегодня. Даже маленькую.' },
+    { emoji: '🚫', text: 'Не всё, что делают другие, — правильно. Думай своей головой. Это твоя суперсила.' },
+    { emoji: '💪', text: 'Слабость — не в том, чтобы упасть. Слабость — не вставать. Ты можешь встать.' },
+    { emoji: '🎧', text: 'Послушай музыку без телефона в руках. Просто музыку. Это перезагрузка.' },
+    { emoji: '🙏', text: 'Извинись, если был неправ. Не «извини, но...», а просто «извини». Это сильный ход.' },
+    { emoji: '🌊', text: 'Эмоции приходят волнами. Не принимай решения на пике волны. Подожди, пока спадёт.' },
+    { emoji: '🧩', text: 'Большая задача — это много маленьких. Начни с одной части. Не с целого.' },
+    { emoji: '👕', text: 'Ты не обязан быть как все. Быть собой — это навык. Тренируй его.' },
+    { emoji: '🔍', text: 'Спроси себя: «Что я могу контролировать?» Делай это. Остальное — отпусти.' },
+    { emoji: '🌈', text: 'Даже плохой день — это день. Он пройдёт. Ты — останешься. Береги себя.' },
+    { emoji: '⭐', text: 'Ты уже сделал 30 шагов. Это не мало. Признай это. И продолжай — уже без списка.' }
+  ];
+
+  const d = new Date();
+  const start = new Date(d.getFullYear(), 0, 1);
+  const dayOfYear = Math.floor((d - start) / (1000 * 60 * 60 * 24)) + 1;
+
+  const i = (dayOfYear - 1) % tips.length;
+
+  document.getElementById('dayLabel').textContent = 'Совет ' + (i + 1) + ' из ' + tips.length;
+  document.getElementById('tipText').innerHTML = '<span class="emoji">' + tips[i].emoji + '</span>' + tips[i].text;
+  document.getElementById('headerEmoji').textContent = tips[i].emoji;
+</script>
+</body>
+</html>
