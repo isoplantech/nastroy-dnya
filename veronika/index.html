@@ -21,15 +21,13 @@
     .card {
       background: #fff;
       border-radius: 24px;
-      padding: 36px 40px 30px;
+      padding: 40px 44px;
       text-align: center;
       max-width: 480px;
       box-shadow: 0 10px 40px rgba(120, 90, 60, 0.12);
     }
-    svg { margin-bottom: 10px; }
-    h1 { font-size: 22px; margin: 0 0 14px; color: #b76e79; font-weight: 600; }
-    p  { font-size: 18px; line-height: 1.7; margin: 0; }
-    .small { font-size: 13px; color: #a0958e; margin-top: 22px; }
+    svg { margin-bottom: 16px; }
+    p { font-size: 19px; line-height: 1.7; margin: 0; }
   </style>
 </head>
 <body>
@@ -50,9 +48,7 @@
         <ellipse cx="60" cy="36" rx="7" ry="5" fill="#f2a5b5" transform="rotate(-45 60 36)"/>
       </g>
     </svg>
-    <h1 id="title"></h1>
     <p id="phrase"></p>
-    <p class="small" id="note"></p>
   </div>
 
   <script>
@@ -95,9 +91,7 @@
 
     const i = (dayOfYear - 1) % phrases.length;
 
-    document.getElementById('title').textContent = "День " + (i + 1) + " из 30";
     document.getElementById('phrase').textContent = phrases[i];
-    document.getElementById('note').textContent = "Возвращайся завтра — будет новая фраза.";
   </script>
 </body>
 </html>
