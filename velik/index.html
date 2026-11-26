@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Слово дня</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .card {
+      background: #1e1e1e;
+      border: 2px solid #ff8c00;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
+      transition: opacity 0.8s ease;
+    }
+    .card.fade { opacity: 0; }
+    .thought {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.4;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <div class="thought" id="thought"></div>
+  </div>
+
+  <script>
+    const thoughts = [
+      "Пока ты летишь, мусор не успевает осесть.",
+      "Не бойся упасть. Бойся остановиться.",
+      "Ветра нет, а я всё равно лечу.",
+      "Открытый рот ловит поток. Закрытый — задыхается.",
+      "Камни прошлого остаются позади. Я лечу дальше.",
+      "Этот драйв — не бегство. Это возвращение к себе.",
+      "Дыши глубже. На скорости воздух чище.",
+      "Гравитация любви держит меня на трассе.",
+      "Ветер сдувает всё, что тебе не принадлежит.",
+      "Настоящий кайф — когда рот открыт от восторга, а не от боли.",
+      "Не тормози, иначе лишнее догонит.",
+      "Кричи, если переполняет. Молчи, если пусто.",
+      "Я не «жопа в мыле». Я — «ветер в волосах».",
+      "Камни летят, но я в седле.",
+      "Слёзы счастья и слёзы ветра не отличаются. Оба — про жизнь.",
+      "Вдох — позитив. Выдох — всё лишнее.",
+      "Улыбка на скорости выглядит как крик.",
+      "Скорость — это способ очистить разум.",
+      "Твоя амплитуда — это твоя скорость.",
+      "Этот поток сильнее меня. Я просто держу руль.",
+      "Слёзы от ветра — это слёзы свободы.",
+      "Я не бегу от проблем. Я обгоняю их.",
+      "С горки всегда быстрее, чем в горку. Пользуйся моментом.",
+      "Алеф не в тишине. Алеф в движении.",
+      "Пусть летит всё лишнее. Я оставляю только главное.",
+      "Космос внутри, скорость снаружи.",
+      "Жопа есть, но она осталась на обочине.",
+      "Даже на скорости можно быть в центре.",
+      "Я еду туда, где мой QR-код считывается. И я улыбаюсь.",
+      "Мои слёзы — это не боль. Это перегрузка от движения."
+    ];
+
+    const card = document.getElementById('card');
+    const thoughtEl = document.getElementById('thought');
+
+    function getDateNumber() {
+      const t = new Date();
+      const s = t.getFullYear().toString() +
+                (t.getMonth() + 1).toString().padStart(2, '0') +
+                t.getDate().toString().padStart(2, '0');
+      return parseInt(s, 10);
+    }
+
+    function render() {
+      const index = getDateNumber() % thoughts.length;
+      thoughtEl.textContent = '«' + thoughts[index] + '»';
+    }
+
+    render();
+
+    let lastDate = getDateNumber();
+    setInterval(() => {
+      const now = getDateNumber();
+      if (now !== lastDate) {
+        lastDate = now;
+        card.classList.add('fade');
+        setTimeout(() => {
+          render();
+          card.classList.remove('fade');
+        }, 800);
+      }
+    }, 30000);
+  </script>
+
+</body>
+</html>
