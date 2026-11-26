@@ -12,44 +12,36 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #111; /* Темный фон для контраста */
+      background: #111;
       font-family: 'Segoe UI', Tahoma, sans-serif;
       color: #fff;
       padding: 20px;
       box-sizing: border-box;
       text-align: center;
     }
-    
-    /* Сама карточка */
     .card {
       background: #1e1e1e;
-      border: 2px solid #ff8c00; /* Оранжевая рамка (как корова) */
+      border: 2px solid #ff8c00;
       border-radius: 20px;
       padding: 30px;
       max-width: 400px;
       width: 100%;
       box-shadow: 0 0 30px rgba(255, 140, 0, 0.2);
     }
-
-    /* Гексаграмма */
     .hex {
       font-size: 36px;
       line-height: 1.5;
       margin-bottom: 20px;
       letter-spacing: 5px;
-      color: #ff8c00; /* Оранжевый цвет для линий */
+      color: #ff8c00;
     }
-
-    /* Текст высказывания */
     .thought {
       font-size: 24px;
       font-weight: 700;
       line-height: 1.4;
       margin-bottom: 20px;
-      min-height: 80px; /* Чтобы верстка не прыгала */
+      min-height: 80px;
     }
-
-    /* Название гексаграммы */
     .name {
       font-size: 14px;
       color: #888;
@@ -67,7 +59,6 @@
   </div>
 
   <script>
-    // 1. Твой список высказываний (можешь добавлять/менять)
     const thoughts = [
       "Ветра нет, а жопа есть.",
       "Амплитуду уменьшай.",
@@ -91,7 +82,6 @@
       "Не надейся на «вдруг». Делай."
     ];
 
-    // 2. База гексаграмм (только символы и названия, для атмосферы)
     const hexagrams = [
       { name: "Цянь — Творчество", bits: "111111" },
       { name: "Кунь — Исполнение", bits: "000000" },
@@ -145,18 +135,29 @@
       { name: "Вэй Цзи — Ещё не конец", bits: "010101" }
     ];
 
-    // Выбор случайного высказывания
-    const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
-    // Выбор случайной гексаграммы
-    const randomHex = hexagrams[Math.floor(Math.random() * hexagrams.length)];
+    // --- ЛОГИКА ВЫБОРА СЛОВА ДНЯ ---
+    // Получаем сегодняшнюю дату в формате ГГГГММДД (например, 20261126)
+    const today = new Date();
+    const dateString = today.getFullYear().toString() + 
+                       (today.getMonth() + 1).toString().padStart(2, '0') + 
+                       today.getDate().toString().padStart(2, '0');
+
+    // Превращаем дату в число (например, 20261126)
+    const dateNumber = parseInt(dateString, 10);
+
+    // Выбираем индекс на основе даты (остаток от деления)
+    const thoughtIndex = dateNumber % thoughts.length;
+    const hexIndex = dateNumber % hexagrams.length;
+
+    const dailyThought = thoughts[thoughtIndex];
+    const dailyHex = hexagrams[hexIndex];
 
     // Вывод на экран
-    document.getElementById('thought').textContent = `"${randomThought}"`;
-    document.getElementById('name').textContent = randomHex.name;
+    document.getElementById('thought').textContent = `"${dailyThought}"`;
+    document.getElementById('name').textContent = dailyHex.name;
 
-    // Отрисовка линий гексаграммы
     const hexBox = document.getElementById('hex');
-    for (const bit of randomHex.bits) {
+    for (const bit of dailyHex.bits) {
       const span = document.createElement('span');
       span.textContent = bit === '1' ? '⚋' : '⚊';
       hexBox.appendChild(span);
